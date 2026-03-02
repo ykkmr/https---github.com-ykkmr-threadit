@@ -2,8 +2,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { toggleLike } from '../api/index.js'
-import { useAuthStore } from '../stores/auth.js'
+import { toggleLike } from '../../api/index.js'
+import { useAuthStore } from '../../stores/auth.js'
 
 const props = defineProps({
   thread: { type: Object, required: true },

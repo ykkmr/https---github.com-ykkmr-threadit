@@ -4,18 +4,26 @@ import cors from 'cors';
 import threadRoutes from './routes/thread.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import agentRoutes from './routes/agent.routes.js';
+import searchRoutes from './routes/search.routes.js';
+import hashtagRoutes from './routes/hashtag.routes.js';
+import mediaRoutes from './routes/media.routes.js';
+import guestbookRoutes from './routes/guestbook.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 미들웨어 설정
 app.use(cors());
-app.use(express.json()); // JSON 요청 본문 파싱
+app.use(express.json());
 
-// API 라우터 등록 (API 명세서의 Base URL 적용)
+// API 라우터 등록
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/threads', threadRoutes);
 app.use('/api/v1/agent', agentRoutes);
+app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/hashtags', hashtagRoutes);
+app.use('/api/v1/media', mediaRoutes);
+app.use('/api/v1/users', guestbookRoutes);
 
 // 기본 에러 핸들링
 app.use((err, req, res, next) => {

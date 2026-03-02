@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { createThread } from '../api/index.js'
+import { createThread } from '../../api/index.js'
 
 const props = defineProps({
   parentId: { type: Number, default: null },

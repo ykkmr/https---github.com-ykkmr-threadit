@@ -2,8 +2,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { toggleLike } from '../api/index.js'
-import { useAuthStore } from '../stores/auth.js'
+import { toggleLike } from '../../api/index.js'
+import { useAuthStore } from '../../stores/auth.js'
 import ThreadForm from './ThreadForm.vue'
 import ThreadItem from './ThreadItem.vue' // 재귀 self-import
 
