@@ -37,9 +37,9 @@ const searchQuery = ref('')
       <!-- 데스크탑 메뉴 -->
       <nav class="nav-desktop">
         <RouterLink to="/">홈</RouterLink>
-        <RouterLink v-if="auth.isLoggedIn" to="/profile">프로필</RouterLink>
+        <RouterLink v-if="auth.isLoggedIn" :to="`/profile/${auth.user.id}`">프로필</RouterLink>
         <RouterLink v-if="!auth.isLoggedIn" to="/login">로그인</RouterLink>
-        <button v-else @click="auth.clear()">로그아웃</button>
+        <button v-else @click="auth.logout()">로그아웃</button>
       </nav>
 
       <!-- 모바일 햄버거 -->
@@ -50,7 +50,7 @@ const searchQuery = ref('')
     <div v-if="drawerOpen" class="drawer" @click.self="drawerOpen = false">
       <nav class="drawer-nav">
         <RouterLink to="/" @click="drawerOpen = false">홈</RouterLink>
-        <RouterLink v-if="auth.isLoggedIn" to="/profile" @click="drawerOpen = false">프로필</RouterLink>
+        <RouterLink v-if="auth.isLoggedIn" :to="`/profile/${auth.user.id}`" @click="drawerOpen = false">프로필</RouterLink>
         <RouterLink v-if="!auth.isLoggedIn" to="/login" @click="drawerOpen = false">로그인</RouterLink>
       </nav>
     </div>

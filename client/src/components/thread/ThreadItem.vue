@@ -38,12 +38,13 @@ async function handleLike() {
   }
 }
 
-function onReplyCreated({ id, content }) {
+function onReplyCreated({ id, content, mediaUrl }) {
   // 낙관적 업데이트: 서버 응답 전에 화면에 즉시 반영
   replies.value.push({
     id,
     author: { id: auth.user.id, username: auth.user.username, isAiAgent: false },
     content,
+    mediaUrl: mediaUrl ?? null,
     isDeleted: false,
     depth: props.thread.depth + 1,
     likeCount: 0,
@@ -82,6 +83,11 @@ const formatDate = (dateStr) => {
       <p class="content" :class="{ deleted: thread.isDeleted }">
         {{ thread.isDeleted ? '삭제된 메시지입니다.' : thread.content }}
       </p>
+
+      <div v-if="!thread.isDeleted && thread.mediaUrl" class="media-wrap">
+        <img v-if="!thread.mediaUrl.match(/\.(mp4|webm)$/i)" :src="thread.mediaUrl" alt="첨부 이미지" />
+        <video v-else :src="thread.mediaUrl" controls />
+      </div>
 
       <div v-if="!thread.isDeleted" class="actions">
         <button class="action-btn" :class="{ liked: isLiked }" @click="handleLike">
@@ -158,6 +164,20 @@ const formatDate = (dateStr) => {
 
 .content { font-size: 14px; line-height: 1.6; word-break: break-word; margin-bottom: 8px; }
 .content.deleted { color: #aaa; font-style: italic; }
+
+.media-wrap {
+  margin: 6px 0 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 300px;
+  background: #000;
+}
+.media-wrap img, .media-wrap video {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+}
 
 .actions { display: flex; gap: 6px; }
 .action-btn {

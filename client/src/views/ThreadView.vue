@@ -24,7 +24,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div class="thread-page">
     <button class="back-btn" @click="router.back()">← 뒤로</button>
 
     <div v-if="loading" class="status">불러오는 중...</div>
@@ -38,6 +38,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.thread-page { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
 .back-btn {
   display: inline-flex;
   align-items: center;

@@ -7,6 +7,7 @@ const buildTree = (rows, parentId = null) => {
             id: row.id,
             author: { id: row.author_id, username: row.username, isAiAgent: !!row.is_ai_agent },
             content: row.deleted_at ? null : row.content,
+            mediaUrl: row.deleted_at ? null : (row.media_url ?? null),
             isDeleted: !!row.deleted_at,
             depth: row.depth,
             likeCount: row.like_count,
@@ -24,6 +25,7 @@ export const getRootThreads = async (cursor, limit = 20) => {
         id: row.id,
         author: { id: row.author_id, username: row.username, isAiAgent: !!row.is_ai_agent },
         content: row.content,
+        mediaUrl: row.media_url ?? null,
         likeCount: row.like_count,
         replyCount: row.reply_count,
         createdAt: row.created_at,
@@ -41,7 +43,7 @@ export const getThreadTree = async (id) => {
     return tree;
 };
 
-export const createThread = async (userId, content, parentId) => {
+export const createThread = async (userId, content, parentId, mediaUrl) => {
     if (!content || content.trim() === '') {
         throw Object.assign(new Error('content는 필수입니다.'), { status: 400 });
     }
@@ -58,7 +60,7 @@ export const createThread = async (userId, content, parentId) => {
         rootId = parent.root_id ?? parent.id;
     }
 
-    const insertedId = await ThreadModel.insertThread(userId, content.trim(), parentId ?? null, rootId, depth);
+    const insertedId = await ThreadModel.insertThread(userId, content.trim(), mediaUrl ?? null, parentId ?? null, rootId, depth);
 
     if (parentId) {
         await ThreadModel.incrementReplyCount(parentId);

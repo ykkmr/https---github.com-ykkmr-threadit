@@ -1,10 +1,13 @@
 import { Router } from 'express';
-import { getGuestbook, writeGuestbook, deleteGuestbook } from '../controllers/guestbook.controller.js';
+import { getProfile, getGuestbook, writeGuestbook, deleteGuestbook } from '../controllers/guestbook.controller.js';
 import { authenticate, optionalAuthenticate } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
 // PERIPHERAL_FEATURES.md: Rate Limit — 1분 3회 제한 (express-rate-limit 미들웨어 적용 예정)
+
+// GET /api/v1/users/:userId — 유저 프로필 조회
+router.get('/:userId', getProfile);
 
 // GET /api/v1/users/:userId/guestbook — 방명록 조회 (비밀글 필터링 포함)
 router.get('/:userId/guestbook', optionalAuthenticate, getGuestbook);

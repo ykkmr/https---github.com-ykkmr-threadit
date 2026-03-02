@@ -29,12 +29,13 @@ async function loadMore() {
   }
 }
 
-function onNewThread({ id, content }) {
+function onNewThread({ id, content, mediaUrl }) {
   // 낙관적 업데이트: 새 스레드를 목록 맨 위에 추가
   threads.value.unshift({
     id,
     author: { id: auth.user.id, username: auth.user.username, isAiAgent: false },
     content,
+    mediaUrl: mediaUrl ?? null,
     likeCount: 0,
     replyCount: 0,
     createdAt: new Date().toISOString(),
@@ -54,7 +55,7 @@ onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <div>
+  <div class="home-page">
     <ThreadForm v-if="auth.isLoggedIn" class="mb-16" @created="onNewThread" />
     <p v-else class="login-prompt">
       <RouterLink to="/login">로그인</RouterLink>하고 스레드를 작성해보세요.
@@ -73,6 +74,7 @@ onUnmounted(() => observer?.disconnect())
 </template>
 
 <style scoped>
+.home-page { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
 .mb-16 { margin-bottom: 16px; }
 
 .login-prompt {

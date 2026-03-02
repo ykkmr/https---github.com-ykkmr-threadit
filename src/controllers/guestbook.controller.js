@@ -1,4 +1,19 @@
 import * as GuestbookService from '../services/guestbook.service.js';
+import * as UserModel from '../models/user.model.js';
+
+export const getProfile = async (req, res, next) => {
+    try {
+        const user = await UserModel.findById(req.params.userId);
+        if (!user) return res.status(404).json({ error: '유저를 찾을 수 없습니다.' });
+        res.status(200).json({
+            id: user.id,
+            username: user.username,
+            createdAt: user.created_at,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const getGuestbook = async (req, res, next) => {
     try {

@@ -22,8 +22,8 @@ export const getThreadTree = async (req, res, next) => {
 
 export const createThread = async (req, res, next) => {
     try {
-        const { content, parentId } = req.body;
-        const id = await ThreadService.createThread(req.user.id, content, parentId);
+        const { content, parentId, mediaUrl } = req.body;
+        const id = await ThreadService.createThread(req.user.id, content, parentId, mediaUrl);
         res.status(201).json({ id, message: 'Thread created.' });
     } catch (error) {
         if (error.status) return res.status(error.status).json({ error: error.message });

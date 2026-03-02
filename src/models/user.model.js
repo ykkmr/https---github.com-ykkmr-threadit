@@ -1,5 +1,13 @@
 import pool from '../config/db.js';
 
+export const findById = async (id) => {
+    const [rows] = await pool.query(
+        'SELECT id, username, created_at FROM users WHERE id = ?',
+        [id]
+    );
+    return rows[0] ?? null;
+};
+
 export const findByEmailOrUsername = async (email, username) => {
     const [rows] = await pool.query(
         'SELECT id FROM users WHERE email = ? OR username = ?',

@@ -1,23 +1,24 @@
-import * as MediaService from '../services/media.service.js';
+const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
-// Pre-signed URL 발급 (프론트가 S3에 직접 업로드 후 CDN URL 저장)
-export const getPresignedUrl = async (req, res, next) => {
+// POST /api/v1/media/upload — multer가 파일을 uploads/ 에 저장 후 호출
+export const uploadFile = async (req, res, next) => {
     try {
-        const { mimeType, fileSize } = req.body;
-        const result = await MediaService.validateAndGetPresignedUrl(mimeType, fileSize);
-        res.status(200).json(result);
-    } catch (error) {
-        if (error.status) return res.status(error.status).json({ error: error.message });
-        next(error);
-    }
-};
+        if (!req.file) {
+            return res.status(400).json({ error: '파일이 없습니다.' });
+        }
 
-// S3 업로드 완료 후 CDN URL을 DB에 기록
-export const saveMedia = async (req, res, next) => {
-    try {
-        const { threadId, cdnUrl, mediaType } = req.body;
-        const id = await MediaService.saveMediaRecord(threadId, cdnUrl, mediaType);
-        res.status(201).json({ id, message: 'Media saved.' });
+        const isImage = ALLOWED_IMAGE.includes(req.file.mimetype);
+
+        // 이미지 용량 2차 검증 (multer는 50MB 전체 제한, 이미지는 5MB)
+        if (isImage && req.file.size > MAX_IMAGE_SIZE) {
+            return res.status(400).json({ error: '이미지는 최대 5MB까지 허용됩니다.' });
+        }
+
+        const mediaType = isImage ? 'IMAGE' : 'VIDEO';
+        const fileUrl = `/uploads/${req.file.filename}`;
+
+        res.status(201).json({ fileUrl, mediaType, filename: req.file.filename });
     } catch (error) {
         next(error);
     }

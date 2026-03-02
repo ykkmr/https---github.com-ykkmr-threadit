@@ -59,6 +59,10 @@ const formatDate = (dateStr) => {
         <span class="date">{{ formatDate(thread.createdAt) }}</span>
       </div>
       <p class="content">{{ thread.content }}</p>
+      <div v-if="thread.mediaUrl" class="media-wrap">
+        <img v-if="!thread.mediaUrl.match(/\.(mp4|webm)$/i)" :src="thread.mediaUrl" alt="첨부 이미지" />
+        <video v-else :src="thread.mediaUrl" controls />
+      </div>
       <div class="actions" @click.stop>
         <button class="action-btn" :class="{ liked: isLiked }" @click="handleLike">
           {{ isLiked ? '♥' : '♡' }} {{ likeCount }}
@@ -125,6 +129,20 @@ const formatDate = (dateStr) => {
   line-height: 1.6;
   word-break: break-word;
   margin-bottom: 10px;
+}
+
+.media-wrap {
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 320px;
+  background: #000;
+}
+.media-wrap img, .media-wrap video {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
 }
 
 .actions { display: flex; gap: 8px; }

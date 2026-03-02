@@ -18,3 +18,15 @@ export const toggleLike = (id) => api.post(`/threads/${id}/like`)
 export const register = (data) => api.post('/auth/register', data)
 export const login = (data) => api.post('/auth/login', data)
 export const invokeAgent = (data) => api.post('/agent/clawdbot/invoke', data)
+
+// 유저 프로필 & 방명록
+export const getProfile = (userId) => api.get(`/users/${userId}`)
+export const getGuestbook = (userId) => api.get(`/users/${userId}/guestbook`)
+export const writeGuestbook = (userId, data) => api.post(`/users/${userId}/guestbook`, data)
+export const deleteGuestbookEntry = (id) => api.delete(`/users/guestbook/${id}`)
+
+// 검색
+export const searchAll = (q, cursor) => api.get('/search', { params: { q, ...(cursor ? { cursor } : {}) } })
+
+// 미디어 Pre-signed URL
+export const getPresignedUrl = (data) => api.post('/media/presign', data)
