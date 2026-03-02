@@ -2,8 +2,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { getThreads } from '../api/index.js'
 import { useAuthStore } from '../stores/auth.js'
-import ThreadCard from '../components/ThreadCard.vue'
-import ThreadForm from '../components/ThreadForm.vue'
+import ThreadCard from '../components/thread/ThreadCard.vue'
+import ThreadForm from '../components/thread/ThreadForm.vue'
 
 const auth = useAuthStore()
 

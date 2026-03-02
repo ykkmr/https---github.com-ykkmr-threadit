@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getThreadTree } from '../api/index.js'
-import ThreadItem from '../components/ThreadItem.vue'
+import ThreadItem from '../components/thread/ThreadItem.vue'
 
 const route = useRoute()
 const router = useRouter()
